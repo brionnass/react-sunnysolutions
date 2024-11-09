@@ -1,0 +1,114 @@
+/* src/pages/Home.css */
+
+/* Header styling */
+.header {
+    background: linear-gradient(to right, #87CEEB, #00BFFF);
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    font-size: 32px;
+    font-weight: bold;
+    color: #FFD700;
+}
+
+.navigation-menu ul {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+}
+
+.navigation-menu ul li a {
+    text-decoration: none;
+    color: white;
+    font-size: 16px;
+}
+
+/* Hero section styling without background image */
+.hero-section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 100px 5%;
+    color: white;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7);
+}
+
+/* Additional styling for hero content */
+.hero-content h1 {
+    font-size: 56px;
+    color: #FFD700;
+}
+
+.hero-content p {
+    font-size: 20px;
+}
+
+.hero-button {
+    background-color: #FFA500;
+    color: white;
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 8px;
+    transition: background-color 0.3s;
+}
+
+.hero-button:hover {
+    background-color: #FF4500;
+}
+
+/* Featured products section */
+.featured-products {
+    background-color: #FFFBEC;
+    padding: 50px;
+    text-align: center;
+}
+
+.product-gallery {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    margin-top: 20px;
+    flex-wrap: wrap;
+}
+
+.product-item {
+    background-color: #FFF;
+    border: 1px solid #FFD700;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 180px;
+    text-align: center;
+}
+
+.product-item img {
+    width: 100px;
+    height: 100px;
+}
+
+.product-button {
+    background-color: #FFA500;
+    color: white;
+    padding: 5px 10px;
+    text-decoration: none;
+    border-radius: 5px;
+    margin-top: 10px;
+}
+
+.product-button:hover {
+    background-color: #FF4500;
+}
+
+/* Footer styling */
+.footer {
+    background-color: #00BFFF;
+    color: white;
+    text-align: center;
+    padding: 15px;
+    margin-top: 30px;
+}
+
