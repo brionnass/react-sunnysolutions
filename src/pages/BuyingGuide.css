@@ -1,0 +1,32 @@
+.sunscreen-types-section {
+    background-color: #FFFBEC;
+    padding: 40px;
+    margin: 30px auto;
+    max-width: 900px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.sunscreen-types-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+}
+
+.sunscreen-types-table th, .sunscreen-types-table td {
+    padding: 15px;
+    border: 1px solid #ddd;
+}
+
+.sunscreen-types-table th {
+    background-color: #FFD700; /* Sun-yellow header */
+    color: #333;
+}
+
+.sunscreen-types-table tr:nth-child(even) {
+    background-color: #FFFBEC; /* Alternating row color */
+}
+
+.sunscreen-types-table td {
+    vertical-align: top;
+}

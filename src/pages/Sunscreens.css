@@ -1,0 +1,148 @@
+body{
+    margin: 0;
+    padding: 0;
+    font-family: 'Arial', sans-serif;
+    background: linear-gradient(to bottom, #A7EFFF, #FFFBEC); /* Sky to sand gradient */
+    color: #333;
+    
+}
+
+.product-grid {
+    background-color: #FFFBEC;
+    padding: 50px;
+    text-align: center;
+}
+
+.product-gallery {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    flex-wrap: wrap; /* Ensure responsiveness on smaller screens */
+}
+
+.product-item {
+    background-color: #FFF;
+    border: 1px solid #FFD700; /* Sun-yellow border */
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 200px;
+    text-align: center;
+    transition: transform 0.2s; /* Smooth hover effect */
+}
+
+.product-item:hover {
+    transform: translateY(-5px); /* Slight lift on hover */
+}
+
+.product-item img {
+    width: 100px;
+    height: 100px;
+    margin-bottom: 10px;
+}
+
+.product-button {
+    background-color: #FFA500; /* Orange button */
+    color: white;
+    padding: 8px 15px;
+    text-decoration: none;
+    border-radius: 5px;
+    display: inline-block;
+    margin-top: 10px;
+    transition: background-color 0.3s;
+}
+
+.product-button:hover {
+    background-color: #FF4500; /* Bright hover color */
+}
+
+/* Sunscreen Recommendation Table */
+/* Sunscreen Recommendation Table Styles */
+.recommendation-section {
+    background-color: #FFF;
+    padding: 40px;
+    margin: 30px auto;
+    max-width: 900px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.recommendation-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+    margin: 20px 0;
+}
+
+.recommendation-table th, .recommendation-table td {
+    padding: 15px;
+    border: 1px solid #ddd;
+}
+
+.recommendation-table th {
+    background-color: #FFD700; /* Sun-yellow header */
+    color: #333;
+    font-weight: bold;
+}
+
+.recommendation-table tr:nth-child(even) {
+    background-color: #FFFBEC; /* Alternating row color */
+}
+
+.recommendation-table td {
+    vertical-align: top; /* Align text to the top for consistency */
+}
+
+.section-title {
+    text-align: center;
+    font-size: 24px;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+/* Modal Styling */
+.modal {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+    z-index: 1000;
+}
+
+.modal-content {
+    background-color: #FFF;
+    padding: 20px;
+    width: 90%;
+    max-width: 500px; /* Smaller width for pop-up */
+    text-align: center;
+    border-radius: 10px;
+    position: relative;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    overflow-y: auto; /* Ensures content doesn’t overflow */
+    max-height: 80vh; /* Limits height to fit in the viewport */
+}
+
+.modal-content img {
+    width: 100px;
+    height: auto;
+    margin: 10px 0;
+}
+
+.close-button {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 24px;
+    cursor: pointer;
+    color: #333;
+}
+
+.close-button:hover {
+    color: #FF0000;
+}
+

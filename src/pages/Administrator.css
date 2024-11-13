@@ -1,0 +1,93 @@
+.admin-section {
+    padding: 40px;
+    background-color: #FFFBEC;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.reviews-management {
+    margin-bottom: 30px;
+}
+
+.reviews-list {
+    list-style: none;
+    padding: 0;
+}
+
+.reviews-list li {
+    background-color: #FFF;
+    border: 1px solid #FFD700;
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.edit-btn, .delete-btn {
+    background-color: #FFA500;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    margin-left: 5px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.edit-btn:hover, .delete-btn:hover {
+    background-color: #FF4500; /* Darker orange on hover */
+}
+
+.add-sunscreen-form {
+    background-color: #FFF;
+    padding: 20px;
+    border: 1px solid #FFD700;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.add-sunscreen-form h3 {
+    margin-top: 0;
+}
+
+.add-sunscreen-form label {
+    display: block;
+    margin-top: 10px;
+}
+
+.add-sunscreen-form input[type="text"], 
+.add-sunscreen-form input[type="number"],
+.add-sunscreen-form textarea {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+.submit-btn {
+    background-color: #FFA500;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.submit-btn:hover {
+    background-color: #FF4500; /* Bright hover color */
+}
+/* Sunscreen Graph Section */
+.sunscreen-graph-section {
+    margin: 30px auto;
+    max-width: 600px;
+    background-color: #FFF;
+    padding: 20px;
+    border: 1px solid #FFD700;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+

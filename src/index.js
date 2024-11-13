@@ -1,18 +1,16 @@
-// src/index.js
-
 import React from 'react';
-import ReactDOM from 'react-dom/client'; // Import createRoot from react-dom/client
+import ReactDOM from 'react-dom/client';
+import { BrowserRouter } from 'react-router-dom';
 import App from './App';
+import './index.css';
 
-const rootElement = document.getElementById('root'); // Make sure this matches the ID in index.html
-if (rootElement) {
-  const root = ReactDOM.createRoot(rootElement);
-  root.render(
-    <React.StrictMode>
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(
+  <React.StrictMode>
+    <BrowserRouter basename={process.env.PUBLIC_URL}>
       <App />
-    </React.StrictMode>
-  );
-} else {
-  console.error('Root element not found');
-}
+    </BrowserRouter>
+  </React.StrictMode>
+);
+
 
