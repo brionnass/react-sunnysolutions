@@ -1,13 +1,20 @@
 {
   "files": {
-    "main.css": "/react-sunnysolutions/static/css/main.8add9c77.css",
-    "main.js": "/react-sunnysolutions/static/js/main.895af545.js",
+    "main.css": "/react-sunnysolutions/static/css/main.1abc16d1.css",
+    "main.js": "/react-sunnysolutions/static/js/main.164ba0ed.js",
+    "static/media/aboutus.png": "/react-sunnysolutions/static/media/aboutus.857e590b10c5f11a2127.png",
+    "static/media/sunscreen2.jpg": "/react-sunnysolutions/static/media/sunscreen2.a7a2f454a1a55ee6ccff.jpg",
+    "static/media/sunscreen3.jpg": "/react-sunnysolutions/static/media/sunscreen3.64690fc459351a436da1.jpg",
+    "static/media/beach-background.jpg": "/react-sunnysolutions/static/media/beach-background.9a6868ab423781976d4d.jpg",
+    "static/media/sunscreen4.jpg": "/react-sunnysolutions/static/media/sunscreen4.cf8a1efa365ac6dba085.jpg",
+    "static/media/choosesunscreen.jpg": "/react-sunnysolutions/static/media/choosesunscreen.c6560d09cecca7a51ae4.jpg",
+    "static/media/sunscreen1.jpg": "/react-sunnysolutions/static/media/sunscreen1.56343aca2cd1dfc963c7.jpg",
     "index.html": "/react-sunnysolutions/index.html",
-    "main.8add9c77.css.map": "/react-sunnysolutions/static/css/main.8add9c77.css.map",
-    "main.895af545.js.map": "/react-sunnysolutions/static/js/main.895af545.js.map"
+    "main.1abc16d1.css.map": "/react-sunnysolutions/static/css/main.1abc16d1.css.map",
+    "main.164ba0ed.js.map": "/react-sunnysolutions/static/js/main.164ba0ed.js.map"
   },
   "entrypoints": [
-    "static/css/main.8add9c77.css",
-    "static/js/main.895af545.js"
+    "static/css/main.1abc16d1.css",
+    "static/js/main.164ba0ed.js"
   ]
 }
