@@ -1,33 +1,26 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Footer from '../components/Footer';
 import Header from '../components/Header';
 import HeroSection from '../components/HeroSection';
 import choosesunscreen from '../images/choosesunscreen.jpg';
-import productsData from '../products.json'; // Import the JSON data directly
 import './Sunscreens.css';
 
-// Import images
-import sunscreen1 from '../images/sunscreen1.jpg';
-import sunscreen2 from '../images/sunscreen2.jpg';
-import sunscreen3 from '../images/sunscreen3.jpg';
-import sunscreen4 from '../images/sunscreen4.jpg';
-
 function Sunscreens() {
-    // Map the JSON data to link to the correct imported images
-    const productsWithImages = productsData.map(product => ({
-        ...product,
-        image:
-            product.id === 1
-                ? sunscreen1
-                : product.id === 2
-                ? sunscreen2
-                : product.id === 3
-                ? sunscreen3
-                : sunscreen4,
-    }));
-
-    const [products] = useState(productsWithImages); // Initialize products state with mapped images
+    const [products, setProducts] = useState([]);
     const [selectedProduct, setSelectedProduct] = useState(null);
+    const [error, setError] = useState(null);
+
+    useEffect(() => {
+        fetch('https://server-project-2ni3.onrender.com/api/products')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error("Network response was not ok");
+                }
+                return response.json();
+            })
+            .then(data => setProducts(data))
+            .catch(error => setError(error.message));
+    }, []);
 
     const showModal = (product) => {
         setSelectedProduct(product);
@@ -41,10 +34,13 @@ function Sunscreens() {
         <div>
             <Header />
             <HeroSection
-    backgroundImage={choosesunscreen} // Use choosesunscreen for Sunscreens page
-    title="Explore Our Sunscreens"
-    subtitle="Find the perfect sunscreen to keep your skin safe and healthy under the sun."
-/>
+                backgroundImage={choosesunscreen}
+                title="Explore Our Sunscreens"
+                subtitle="Find the perfect sunscreen to keep your skin safe and healthy under the sun."
+            />
+
+            {/* Error Handling */}
+            {error && <p className="error-message">Error: {error}</p>}
 
             {/* Product Grid Section */}
             <section className="product-grid">
@@ -52,7 +48,10 @@ function Sunscreens() {
                 <div className="product-gallery">
                     {products.map((product) => (
                         <div className="product-item" key={product.id}>
-                            <img src={product.image} alt={product.name} />
+                            <img 
+                                src={`https://server-project-2ni3.onrender.com${product.image}`} 
+                                alt={product.name} 
+                            />
                             <h3>{product.name}</h3>
                             <p>{product.shortDescription}</p>
                             <button className="product-button" onClick={() => showModal(product)}>Learn More</button>
@@ -107,7 +106,10 @@ function Sunscreens() {
                     <div className="modal-content" onClick={(e) => e.stopPropagation()}>
                         <span className="close-button" onClick={closeModal}>&times;</span>
                         <h2>{selectedProduct.name}</h2>
-                        <img src={selectedProduct.image} alt={selectedProduct.name} />
+                        <img 
+                            src={`https://server-project-2ni3.onrender.com${selectedProduct.image}`} 
+                            alt={selectedProduct.name} 
+                        />
                         <p><strong>SPF:</strong> {selectedProduct.spf}</p>
                         <p><strong>Price:</strong> {selectedProduct.price}</p>
                         <p><strong>Description:</strong> {selectedProduct.fullDescription}</p>
@@ -139,3 +141,4 @@ function Sunscreens() {
 }
 
 export default Sunscreens;
+
