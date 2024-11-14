@@ -1,30 +1,36 @@
 import React from 'react';
 import { Link } from 'react-router-dom'; // Import Link to enable routing
 
+// Import images
+import sunscreen1 from '../images/sunscreen1.jpg';
+import sunscreen2 from '../images/sunscreen2.jpg';
+import sunscreen3 from '../images/sunscreen3.jpg';
+import sunscreen4 from '../images/sunscreen4.jpg';
+
 function Products() {
     const products = [
         {
             id: 1,
             name: "Sunny SPF 50",
-            image: "/images/sunscreen1.jpg",
+            image: sunscreen1,
             shortDescription: "High protection sunscreen.",
         },
         {
             id: 2,
             name: "Sunny SPF 30",
-            image: "/images/sunscreen2.jpg",
+            image: sunscreen2,
             shortDescription: "Daily protection against UV rays.",
         },
         {
             id: 3,
             name: "Sunny Kids SPF 40",
-            image: "/images/sunscreen3.jpg",
+            image: sunscreen3,
             shortDescription: "Gentle sunscreen for children.",
         },
         {
             id: 4,
             name: "Sunny Sport SPF 60",
-            image: "/images/sunscreen4.jpg",
+            image: sunscreen4,
             shortDescription: "High SPF for active lifestyles.",
         },
     ];
@@ -47,5 +53,3 @@ function Products() {
 }
 
 export default Products;
-
-

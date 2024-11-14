@@ -1,44 +1,47 @@
-/* HeroSection.css */
-
 .hero-section {
     display: flex;
-    justify-content: flex-start; /* Aligns content to the left */
-    align-items: center;         /* Centers content vertically */
-    padding: 140px 5%;
+    justify-content: space-between;
+    align-items: center;
+    padding: 200px 5%; /* Adjusted padding for better responsiveness */
     color: white;
-    text-align: left;            /* Ensures text is aligned left */
-    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7);
+    text-shadow:2px 2px 5px rgba(0, 0, 0, 0.7) ;
+    max-width: 100%; /* Ensure the section does not exceed viewport width */
     background-size: cover;
-    background-position: center;
-}
-
-.hero-content {
-    max-width: 50%; /* Keeps the content width limited on the left side */
+    overflow: hidden;
+    background:no-repeat center center; 
 }
 
 .hero-content h1 {
     font-size: 56px;
-    color: #FFD700;
-    margin-bottom: 10px;
+    color: #FFD700; /* Golden color for the sun */
 }
 
 .hero-content p {
     font-size: 20px;
     color: #fff;
-    margin-bottom: 20px;
+    margin-bottom: 1.2rem;
 }
 
 .hero-button {
-    background-color: #FFA500;
+    background-color: #FFA500; /* Bright orange */
     color: white;
     padding: 10px 20px;
     text-decoration: none;
     border-radius: 8px;
     transition: background-color 0.3s;
-    font-size: 18px;
-    margin-top: 20px;
 }
 
 .hero-button:hover {
-    background-color: #FF4500;
+    background-color: #FF4500; /* Darker orange on hover */
+}
+
+.hero-image-container {
+    display: flex;
+    align-items: flex-end;
+    flex-wrap: wrap; /* Ensure images adjust to smaller screen sizes */
+}
+
+.hero-image {
+    width: 300px;
+    margin-right: 10px;
 }

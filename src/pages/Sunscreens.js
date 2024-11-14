@@ -1,19 +1,33 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import Footer from '../components/Footer';
 import Header from '../components/Header';
 import HeroSection from '../components/HeroSection';
+import choosesunscreen from '../images/choosesunscreen.jpg';
+import productsData from '../products.json'; // Import the JSON data directly
 import './Sunscreens.css';
 
-function Sunscreens() {
-    const [products, setProducts] = useState([]);
-    const [selectedProduct, setSelectedProduct] = useState(null);
+// Import images
+import sunscreen1 from '../images/sunscreen1.jpg';
+import sunscreen2 from '../images/sunscreen2.jpg';
+import sunscreen3 from '../images/sunscreen3.jpg';
+import sunscreen4 from '../images/sunscreen4.jpg';
 
-    useEffect(() => {
-        fetch('/products.json')
-            .then(response => response.json())
-            .then(data => setProducts(data))
-            .catch(error => console.error('Error fetching products:', error));
-    }, []);
+function Sunscreens() {
+    // Map the JSON data to link to the correct imported images
+    const productsWithImages = productsData.map(product => ({
+        ...product,
+        image:
+            product.id === 1
+                ? sunscreen1
+                : product.id === 2
+                ? sunscreen2
+                : product.id === 3
+                ? sunscreen3
+                : sunscreen4,
+    }));
+
+    const [products] = useState(productsWithImages); // Initialize products state with mapped images
+    const [selectedProduct, setSelectedProduct] = useState(null);
 
     const showModal = (product) => {
         setSelectedProduct(product);
@@ -27,16 +41,16 @@ function Sunscreens() {
         <div>
             <Header />
             <HeroSection
-                backgroundImage="/images/choosesunscreen.jpg"
-                title="Explore Our Sunscreens"
-                subtitle="Find the perfect sunscreen to keep your skin safe and healthy under the sun."
-            />
+    backgroundImage={choosesunscreen} // Use choosesunscreen for Sunscreens page
+    title="Explore Our Sunscreens"
+    subtitle="Find the perfect sunscreen to keep your skin safe and healthy under the sun."
+/>
 
             {/* Product Grid Section */}
             <section className="product-grid">
                 <h2 className="section-title">Our Best-Selling Sunscreens</h2>
                 <div className="product-gallery">
-                    {products.map(product => (
+                    {products.map((product) => (
                         <div className="product-item" key={product.id}>
                             <img src={product.image} alt={product.name} />
                             <h3>{product.name}</h3>
@@ -90,14 +104,14 @@ function Sunscreens() {
             {/* Modal for Full Product Details */}
             {selectedProduct && (
                 <div className="modal" onClick={closeModal}>
-                    <div className="modal-content" onClick={e => e.stopPropagation()}>
+                    <div className="modal-content" onClick={(e) => e.stopPropagation()}>
                         <span className="close-button" onClick={closeModal}>&times;</span>
                         <h2>{selectedProduct.name}</h2>
                         <img src={selectedProduct.image} alt={selectedProduct.name} />
                         <p><strong>SPF:</strong> {selectedProduct.spf}</p>
                         <p><strong>Price:</strong> {selectedProduct.price}</p>
                         <p><strong>Description:</strong> {selectedProduct.fullDescription}</p>
-                        
+
                         <div>
                             <strong>Features:</strong>
                             <ul>
@@ -106,7 +120,7 @@ function Sunscreens() {
                                 ))}
                             </ul>
                         </div>
-                        
+
                         <div>
                             <strong>Main Ingredients:</strong>
                             <ul>

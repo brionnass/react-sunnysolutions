@@ -1,7 +1,7 @@
 import React from 'react';
 import './HeroSection.css';
 
-function HeroSection({ title, subtitle, buttonText, buttonLink, backgroundImage }) {
+function HeroSection({ backgroundImage, title, subtitle, buttonText, buttonLink }) {
     const sectionStyle = {
         backgroundImage: `url(${backgroundImage})`,
         backgroundSize: 'cover',
@@ -24,4 +24,3 @@ function HeroSection({ title, subtitle, buttonText, buttonLink, backgroundImage 
 }
 
 export default HeroSection;
-

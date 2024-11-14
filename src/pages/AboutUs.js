@@ -1,6 +1,7 @@
 import React from 'react';
 import Footer from '../components/Footer';
 import Header from '../components/Header';
+import aboutUsImage from '../images/aboutus.png'; // Import the image
 import './AboutUs.css';
 
 function AboutUs() {
@@ -10,7 +11,7 @@ function AboutUs() {
             <main>
                 <h2 className="subheader">About Sunny Solutions</h2>
                 <div className="about-us-container">
-                    <img src="/images/aboutus.png" alt="Sunscreen products" className="hero-image" />
+                    <img src={aboutUsImage} alt="Sunscreen products" className="hero-image" /> {/* Use the imported image */}
                     <div className="about-text">
                         <p>
                             Sunny Solutions was founded with a simple yet powerful goal: to make sun protection accessible, effective, and enjoyable for everyone. Inspired by the natural beauty of the outdoors and the need to protect it, we developed a range of sunscreens that are not only gentle on your skin but also kind to the environment. Our journey began with a vision to create a product that combines the best of science and nature, offering high-quality sun protection that you can trust.
