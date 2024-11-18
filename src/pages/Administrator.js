@@ -1,5 +1,5 @@
 import { Chart, registerables } from 'chart.js';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import Footer from '../components/Footer';
 import Header from '../components/Header';
 import './Administrator.css';
@@ -7,6 +7,19 @@ import './Administrator.css';
 Chart.register(...registerables);
 
 function Administrator() {
+    const [formData, setFormData] = useState({
+        name: '',
+        shortDescription: '',
+        fullDescription: '',
+        spf: '',
+        price: '',
+        image: '', // URL for image
+        features: '',
+        mainIngredients: '',
+    });
+    const [error, setError] = useState(null);
+    const [success, setSuccess] = useState(null);
+
     useEffect(() => {
         let sunscreenChart;
 
@@ -37,6 +50,49 @@ function Administrator() {
         };
     }, []);
 
+    // Handle text input changes
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        setFormData({ ...formData, [name]: value });
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        setError(null);
+        setSuccess(null);
+
+        try {
+            const response = await fetch('https://server-project-2ni3.onrender.com/api/products', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    ...formData,
+                    features: formData.features.split(',').map(feature => feature.trim()),
+                    mainIngredients: formData.mainIngredients.split(',').map(ingredient => ingredient.trim()),
+                }),
+            });
+
+            if (response.ok) {
+                setSuccess("Product added successfully!");
+                setFormData({
+                    name: '',
+                    shortDescription: '',
+                    fullDescription: '',
+                    spf: '',
+                    price: '',
+                    image: '',
+                    features: '',
+                    mainIngredients: '',
+                });
+            } else {
+                const result = await response.json();
+                setError(result.message || "Failed to add product.");
+            }
+        } catch (err) {
+            setError("Error connecting to the server.");
+        }
+    };
+
     return (
         <div className="admin-page">
             <Header />
@@ -53,17 +109,17 @@ function Administrator() {
                             <button className="delete-btn">Delete</button>
                         </li>
                         <li>
-                            <span>Review 2: "Not the best for sensitive skin."</span>
+                            <span>Review 2: "ok sunscreen, highly recommend!"</span>
                             <button className="edit-btn">Edit</button>
                             <button className="delete-btn">Delete</button>
                         </li>
                         <li>
-                            <span>Review 3: "Affordable and effective in the sun."</span>
+                            <span>Review 3: "good sunscreen, highly recommend!"</span>
                             <button className="edit-btn">Edit</button>
                             <button className="delete-btn">Delete</button>
                         </li>
                         <li>
-                            <span>Review 4: "Leaves a white cast on darker skin tones."</span>
+                            <span>Review 4: "bad sunscreen, highly recommend!"</span>
                             <button className="edit-btn">Edit</button>
                             <button className="delete-btn">Delete</button>
                         </li>
@@ -76,24 +132,98 @@ function Administrator() {
                     <canvas id="sunscreenPopularityChart"></canvas>
                 </div>
 
-                {/* Add Sunscreen Section */}
+                {/* Add New Sunscreen Section */}
                 <div className="add-sunscreen-form">
                     <h3>Add New Sunscreen</h3>
-                    <form>
-                        <label htmlFor="sunscreen-name">Sunscreen Name:</label>
-                        <input type="text" id="sunscreen-name" name="sunscreen-name" required />
+                    <form onSubmit={handleSubmit}>
+                        <label htmlFor="name">Sunscreen Name:</label>
+                        <input
+                            type="text"
+                            id="name"
+                            name="name"
+                            value={formData.name}
+                            onChange={handleInputChange}
+                            required
+                        />
 
-                        <label htmlFor="spf-level">SPF Level:</label>
-                        <input type="number" id="spf-level" name="spf-level" required />
+                        <label htmlFor="spf">SPF Level:</label>
+                        <input
+                            type="number"
+                            id="spf"
+                            name="spf"
+                            value={formData.spf}
+                            onChange={handleInputChange}
+                            required
+                        />
 
-                        <label htmlFor="description">Description:</label>
-                        <textarea id="description" name="description" rows="4" required></textarea>
+                        <label htmlFor="price">Price:</label>
+                        <input
+                            type="text"
+                            id="price"
+                            name="price"
+                            value={formData.price}
+                            onChange={handleInputChange}
+                            required
+                        />
 
-                        <label htmlFor="sunscreen-image">Upload Image:</label>
-                        <input type="file" id="sunscreen-image" name="sunscreen-image" accept="image/*" />
+                        <label htmlFor="shortDescription">Short Description:</label>
+                        <textarea
+                            id="shortDescription"
+                            name="shortDescription"
+                            rows="2"
+                            value={formData.shortDescription}
+                            onChange={handleInputChange}
+                        ></textarea>
+
+                        <label htmlFor="fullDescription">Full Description:</label>
+                        <textarea
+                            id="fullDescription"
+                            name="fullDescription"
+                            rows="4"
+                            value={formData.fullDescription}
+                            onChange={handleInputChange}
+                        ></textarea>
+
+                        <label htmlFor="image">Image URL:</label>
+                        <input
+                            type="text"
+                            id="image"
+                            name="image"
+                            value={formData.image}
+                            onChange={handleInputChange}
+                            placeholder="Enter image URL"
+                            required
+                        />
+
+                        <label>Features (comma-separated):</label>
+                        <input
+                            type="text"
+                            id="features"
+                            name="features"
+                            value={formData.features}
+                            onChange={handleInputChange}
+                            placeholder="e.g., Water-resistant, Non-greasy"
+                            required
+                        />
+
+                        <label>Main Ingredients (comma-separated):</label>
+                        <input
+                            type="text"
+                            id="mainIngredients"
+                            name="mainIngredients"
+                            value={formData.mainIngredients}
+                            onChange={handleInputChange}
+                            placeholder="e.g., Zinc Oxide, Aloe Vera"
+                            required
+                        />
 
                         <button type="submit" className="submit-btn">Add Sunscreen</button>
                     </form>
+                    {/* Success Message at Bottom */}
+                    {success && <p className="success" style={{ color: 'green' }}>{success}</p>}
+
+
+                    {error && <p className="error">{error}</p>}
                 </div>
             </main>
             <Footer />
@@ -101,6 +231,4 @@ function Administrator() {
     );
 }
 
-export default Administrator;
-
-
+export default Administrator; 
