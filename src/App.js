@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route, Routes } from 'react-router-dom'; // No need to import Router again
+import { Route, Routes } from 'react-router-dom';
 import AboutUs from './pages/AboutUs';
 import Administrator from './pages/Administrator';
 import BuyingGuide from './pages/BuyingGuide';

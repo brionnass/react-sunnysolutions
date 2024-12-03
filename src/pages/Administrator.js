@@ -230,5 +230,5 @@ function Administrator() {
         </div>
     );
 }
-
 export default Administrator; 
+

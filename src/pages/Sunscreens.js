@@ -9,18 +9,130 @@ function Sunscreens() {
     const [products, setProducts] = useState([]);
     const [selectedProduct, setSelectedProduct] = useState(null);
     const [error, setError] = useState(null);
+    const [success, setSuccess] = useState(null);
+    const [editMode, setEditMode] = useState(false);
+    const [formData, setFormData] = useState({
+        id: '',
+        name: '',
+        shortDescription: '',
+        fullDescription: '',
+        spf: '',
+        price: '',
+        image: '',
+        features: '',
+        mainIngredients: '',
+    });
 
-    useEffect(() => {
+    const fetchProducts = () => {
         fetch('https://server-project-2ni3.onrender.com/api/products')
-            .then(response => {
+            .then((response) => {
                 if (!response.ok) {
-                    throw new Error("Network response was not ok");
+                    throw new Error('Failed to fetch products.');
                 }
                 return response.json();
             })
-            .then(data => setProducts(data))
-            .catch(error => setError(error.message));
+            .then((data) => setProducts(data))
+            .catch((err) => setError(err.message));
+    };
+
+    useEffect(() => {
+        fetchProducts();
     }, []);
+
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        setFormData({ ...formData, [name]: value });
+    };
+
+    const handleEdit = (product) => {
+        setFormData({
+            ...product,
+            features: product.features.join(', '),
+            mainIngredients: product.mainIngredients.join(', '),
+        });
+        setEditMode(true);
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        setError(null);
+        setSuccess(null);
+
+        const url = editMode
+            ? `https://server-project-2ni3.onrender.com/api/products/${formData.id}`
+            : 'https://server-project-2ni3.onrender.com/api/products';
+
+        const method = editMode ? 'PUT' : 'POST';
+
+        try {
+            const response = await fetch(url, {
+                method,
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    ...formData,
+                    features: formData.features.split(',').map((f) => f.trim()),
+                    mainIngredients: formData.mainIngredients.split(',').map((i) => i.trim()),
+                }),
+            });
+
+            if (response.ok) {
+                const updatedProduct = await response.json();
+
+                if (editMode) {
+                    setProducts((prev) =>
+                        prev.map((product) =>
+                            product.id === updatedProduct.product.id ? updatedProduct.product : product
+                        )
+                    );
+                    setSuccess('Product updated successfully!');
+                } else {
+                    setProducts((prev) => [...prev, updatedProduct.product]);
+                    setSuccess('Product added successfully!');
+                }
+
+                resetForm();
+            } else {
+                setError('Failed to save the product.');
+            }
+        } catch (err) {
+            setError('Error connecting to the server.');
+        }
+    };
+
+    const handleDelete = async (id) => {
+        setError(null);
+        setSuccess(null);
+
+        try {
+            const response = await fetch(`https://server-project-2ni3.onrender.com/api/products/${id}`, {
+                method: 'DELETE',
+            });
+
+            if (response.ok) {
+                setProducts((prev) => prev.filter((product) => product.id !== id));
+                setSuccess('Product deleted successfully!');
+            } else {
+                setError('Failed to delete product.');
+            }
+        } catch (err) {
+            setError('Error connecting to the server.');
+        }
+    };
+
+    const resetForm = () => {
+        setFormData({
+            id: '',
+            name: '',
+            shortDescription: '',
+            fullDescription: '',
+            spf: '',
+            price: '',
+            image: '',
+            features: '',
+            mainIngredients: '',
+        });
+        setEditMode(false);
+    };
 
     const showModal = (product) => {
         setSelectedProduct(product);
@@ -39,8 +151,102 @@ function Sunscreens() {
                 subtitle="Find the perfect sunscreen to keep your skin safe and healthy under the sun."
             />
 
-            {/* Error Handling */}
-            {error && <p className="error-message">Error: {error}</p>}
+            {/* Error and Success Messages */}
+            {error && <p className="error">{error}</p>}
+            {success && <p className="success">{success}</p>}
+
+            {/* Add/Edit Product Form */}
+            {editMode && (
+                <section className="edit-sunscreen-form">
+                    <h3>Edit Product</h3>
+                    <form onSubmit={handleSubmit}>
+                        <label htmlFor="name">Sunscreen Name:</label>
+                        <input
+                            type="text"
+                            id="name"
+                            name="name"
+                            value={formData.name}
+                            onChange={handleInputChange}
+                            required
+                        />
+
+                        <label htmlFor="spf">SPF Level:</label>
+                        <input
+                            type="number"
+                            id="spf"
+                            name="spf"
+                            value={formData.spf}
+                            onChange={handleInputChange}
+                            required
+                        />
+
+                        <label htmlFor="price">Price:</label>
+                        <input
+                            type="text"
+                            id="price"
+                            name="price"
+                            value={formData.price}
+                            onChange={handleInputChange}
+                            required
+                        />
+
+                        <label htmlFor="shortDescription">Short Description:</label>
+                        <textarea
+                            id="shortDescription"
+                            name="shortDescription"
+                            rows="2"
+                            value={formData.shortDescription}
+                            onChange={handleInputChange}
+                            required
+                        ></textarea>
+
+                        <label htmlFor="fullDescription">Full Description:</label>
+                        <textarea
+                            id="fullDescription"
+                            name="fullDescription"
+                            rows="4"
+                            value={formData.fullDescription}
+                            onChange={handleInputChange}
+                            required
+                        ></textarea>
+
+                        <label htmlFor="image">Image URL:</label>
+                        <input
+                            type="text"
+                            id="image"
+                            name="image"
+                            value={formData.image}
+                            onChange={handleInputChange}
+                            required
+                        />
+
+                        <label>Features (comma-separated):</label>
+                        <input
+                            type="text"
+                            id="features"
+                            name="features"
+                            value={formData.features}
+                            onChange={handleInputChange}
+                            required
+                        />
+
+                        <label>Main Ingredients (comma-separated):</label>
+                        <input
+                            type="text"
+                            id="mainIngredients"
+                            name="mainIngredients"
+                            value={formData.mainIngredients}
+                            onChange={handleInputChange}
+                            required
+                        />
+
+                        <button type="submit">Update Product</button>
+                        <button type="button" onClick={resetForm}>
+                            Cancel
+                        </button>
+                    </form>
+                </section>
+            )}
 
             {/* Product Grid Section */}
             <section className="product-grid">
@@ -48,19 +254,21 @@ function Sunscreens() {
                 <div className="product-gallery">
                     {products.map((product) => (
                         <div className="product-item" key={product.id}>
-                            <img 
-                                src={`https://server-project-2ni3.onrender.com${product.image}`} 
-                                alt={product.name} 
+                            <img
+                                src={`https://server-project-2ni3.onrender.com${product.image}`}
+                                alt={product.name}
                             />
                             <h3>{product.name}</h3>
                             <p>{product.shortDescription}</p>
-                            <button className="product-button" onClick={() => showModal(product)}>Learn More</button>
+                            <button onClick={() => handleEdit(product)}>Edit</button>
+                            <button onClick={() => handleDelete(product.id)}>Delete</button>
+                            <button onClick={() => showModal(product)}>Learn More</button>
                         </div>
                     ))}
                 </div>
             </section>
 
-            {/* Recommendation Section */}
+            {/* Recommendations Table */}
             <section className="recommendation-section">
                 <h2>Find the Right Sunscreen for You</h2>
                 <table className="recommendation-table">
@@ -100,19 +308,27 @@ function Sunscreens() {
                 </table>
             </section>
 
-            {/* Modal for Full Product Details */}
+            {/* Modal for Product Details */}
             {selectedProduct && (
                 <div className="modal" onClick={closeModal}>
                     <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-                        <span className="close-button" onClick={closeModal}>&times;</span>
+                        <span className="close-button" onClick={closeModal}>
+                            &times;
+                        </span>
                         <h2>{selectedProduct.name}</h2>
-                        <img 
-                            src={`https://server-project-2ni3.onrender.com${selectedProduct.image}`} 
-                            alt={selectedProduct.name} 
+                        <img
+                            src={`https://server-project-2ni3.onrender.com${selectedProduct.image}`}
+                            alt={selectedProduct.name}
                         />
-                        <p><strong>SPF:</strong> {selectedProduct.spf}</p>
-                        <p><strong>Price:</strong> {selectedProduct.price}</p>
-                        <p><strong>Description:</strong> {selectedProduct.fullDescription}</p>
+                        <p>
+                            <strong>SPF:</strong> {selectedProduct.spf}
+                        </p>
+                        <p>
+                            <strong>Price:</strong> {selectedProduct.price}
+                        </p>
+                        <p>
+                            <strong>Description:</strong> {selectedProduct.fullDescription}
+                        </p>
 
                         <div>
                             <strong>Features:</strong>
@@ -141,4 +357,3 @@ function Sunscreens() {
 }
 
 export default Sunscreens;
-
