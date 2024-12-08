@@ -40,15 +40,33 @@ function Sunscreens() {
     }, []);
 
     const handleInputChange = (e) => {
-        const { name, value } = e.target;
-        setFormData({ ...formData, [name]: value });
+        const { name, value, files } = e.target;
+    
+        if (name === "image" && files?.length > 0) {
+            // Handle file upload
+            const file = files[0];
+            const reader = new FileReader();
+            reader.onload = () => {
+                setFormData({ ...formData, image: reader.result }); // Base64 representation for upload
+            };
+            reader.readAsDataURL(file);
+        } else {
+            setFormData({ ...formData, [name]: value });
+        }
     };
+    
 
     const handleEdit = (product) => {
         setFormData({
-            ...product,
+            name: product.name,
+            shortDescription: product.shortDescription,
+            fullDescription: product.fullDescription,
+            spf: product.spf,
+            price: product.price,
+            image: product.image,
             features: product.features.join(', '),
             mainIngredients: product.mainIngredients.join(', '),
+            id: product.id, // Use `id` only for editing
         });
         setEditMode(true);
     };
@@ -57,27 +75,30 @@ function Sunscreens() {
         e.preventDefault();
         setError(null);
         setSuccess(null);
-
+    
         const url = editMode
             ? `https://server-project-2ni3.onrender.com/api/products/${formData.id}`
             : 'https://server-project-2ni3.onrender.com/api/products';
-
+    
         const method = editMode ? 'PUT' : 'POST';
-
+    
+        // Prepare the payload
+        const { id, ...bodyWithoutId } = formData;
+    
         try {
             const response = await fetch(url, {
                 method,
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                    ...formData,
+                    ...bodyWithoutId,
                     features: formData.features.split(',').map((f) => f.trim()),
                     mainIngredients: formData.mainIngredients.split(',').map((i) => i.trim()),
                 }),
             });
-
+    
             if (response.ok) {
                 const updatedProduct = await response.json();
-
+    
                 if (editMode) {
                     setProducts((prev) =>
                         prev.map((product) =>
@@ -89,25 +110,26 @@ function Sunscreens() {
                     setProducts((prev) => [...prev, updatedProduct.product]);
                     setSuccess('Product added successfully!');
                 }
-
                 resetForm();
             } else {
-                setError('Failed to save the product.');
+                const result = await response.json();
+                setError(result.message || 'Failed to save the product.');
             }
         } catch (err) {
             setError('Error connecting to the server.');
         }
     };
-
+    
+    
     const handleDelete = async (id) => {
         setError(null);
         setSuccess(null);
-
+    
         try {
             const response = await fetch(`https://server-project-2ni3.onrender.com/api/products/${id}`, {
                 method: 'DELETE',
             });
-
+    
             if (response.ok) {
                 setProducts((prev) => prev.filter((product) => product.id !== id));
                 setSuccess('Product deleted successfully!');
@@ -118,7 +140,7 @@ function Sunscreens() {
             setError('Error connecting to the server.');
         }
     };
-
+    
     const resetForm = () => {
         setFormData({
             id: '',
@@ -151,11 +173,9 @@ function Sunscreens() {
                 subtitle="Find the perfect sunscreen to keep your skin safe and healthy under the sun."
             />
 
-            {/* Error and Success Messages */}
             {error && <p className="error">{error}</p>}
             {success && <p className="success">{success}</p>}
 
-            {/* Add/Edit Product Form */}
             {editMode && (
                 <section className="edit-sunscreen-form">
                     <h3>Edit Product</h3>
@@ -169,7 +189,6 @@ function Sunscreens() {
                             onChange={handleInputChange}
                             required
                         />
-
                         <label htmlFor="spf">SPF Level:</label>
                         <input
                             type="number"
@@ -179,7 +198,6 @@ function Sunscreens() {
                             onChange={handleInputChange}
                             required
                         />
-
                         <label htmlFor="price">Price:</label>
                         <input
                             type="text"
@@ -189,7 +207,6 @@ function Sunscreens() {
                             onChange={handleInputChange}
                             required
                         />
-
                         <label htmlFor="shortDescription">Short Description:</label>
                         <textarea
                             id="shortDescription"
@@ -199,7 +216,6 @@ function Sunscreens() {
                             onChange={handleInputChange}
                             required
                         ></textarea>
-
                         <label htmlFor="fullDescription">Full Description:</label>
                         <textarea
                             id="fullDescription"
@@ -209,7 +225,6 @@ function Sunscreens() {
                             onChange={handleInputChange}
                             required
                         ></textarea>
-
                         <label htmlFor="image">Image URL:</label>
                         <input
                             type="text"
@@ -219,7 +234,6 @@ function Sunscreens() {
                             onChange={handleInputChange}
                             required
                         />
-
                         <label>Features (comma-separated):</label>
                         <input
                             type="text"
@@ -229,7 +243,6 @@ function Sunscreens() {
                             onChange={handleInputChange}
                             required
                         />
-
                         <label>Main Ingredients (comma-separated):</label>
                         <input
                             type="text"
@@ -239,7 +252,6 @@ function Sunscreens() {
                             onChange={handleInputChange}
                             required
                         />
-
                         <button type="submit">Update Product</button>
                         <button type="button" onClick={resetForm}>
                             Cancel
@@ -248,7 +260,6 @@ function Sunscreens() {
                 </section>
             )}
 
-            {/* Product Grid Section */}
             <section className="product-grid">
                 <h2 className="section-title">Our Best-Selling Sunscreens</h2>
                 <div className="product-gallery">
@@ -268,7 +279,6 @@ function Sunscreens() {
                 </div>
             </section>
 
-            {/* Recommendations Table */}
             <section className="recommendation-section">
                 <h2>Find the Right Sunscreen for You</h2>
                 <table className="recommendation-table">
@@ -281,34 +291,20 @@ function Sunscreens() {
                     <tbody>
                         <tr>
                             <td>Skin Tone</td>
-                            <td>
-                                Darker Skin: Look for sheer or clear sunscreens that don’t leave a white cast. Tinted sunscreens can also blend well with darker tones.<br />
-                                Lighter Skin: Broad-spectrum sunscreen with SPF 30 or higher, and water-resistant for long sun exposure. Tinted sunscreens may also be helpful for even coverage.
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Skin Sensitivity</td>
-                            <td>Choose a sunscreen labeled as “hypoallergenic” or “for sensitive skin.” Fragrance-free and alcohol-free options help prevent irritation. Look for gentle ingredients.</td>
+                            <td>Darker Skin: Sheer or tinted sunscreens.<br />Lighter Skin: SPF 30+.</td>
                         </tr>
                         <tr>
                             <td>Weather</td>
-                            <td>
-                                Hot and Sunny Weather: Use SPF 50+ and broad-spectrum protection, ideally water-resistant for sweat or water activities.<br />
-                                Cold or Cloudy Weather: SPF 30 is typically sufficient, but make sure it’s broad-spectrum to protect against both UVA and UVB rays.
-                            </td>
+                            <td>Hot: SPF 50+ and water-resistant.<br />Cold: SPF 30 broad-spectrum.</td>
                         </tr>
                         <tr>
                             <td>Age</td>
-                            <td>
-                                Children and Babies: Use sunscreen with SPF 30-50, specially formulated for children to avoid irritation.<br />
-                                Adults: SPF 30 or higher for daily use, and SPF 50+ for outdoor activities. Use formulations suited to your skin type.
-                            </td>
+                            <td>Kids: SPF 30-50.<br />Adults: SPF 30+ for daily use.</td>
                         </tr>
                     </tbody>
                 </table>
             </section>
 
-            {/* Modal for Product Details */}
             {selectedProduct && (
                 <div className="modal" onClick={closeModal}>
                     <div className="modal-content" onClick={(e) => e.stopPropagation()}>
@@ -320,16 +316,9 @@ function Sunscreens() {
                             src={`https://server-project-2ni3.onrender.com${selectedProduct.image}`}
                             alt={selectedProduct.name}
                         />
-                        <p>
-                            <strong>SPF:</strong> {selectedProduct.spf}
-                        </p>
-                        <p>
-                            <strong>Price:</strong> {selectedProduct.price}
-                        </p>
-                        <p>
-                            <strong>Description:</strong> {selectedProduct.fullDescription}
-                        </p>
-
+                        <p><strong>SPF:</strong> {selectedProduct.spf}</p>
+                        <p><strong>Price:</strong> {selectedProduct.price}</p>
+                        <p><strong>Description:</strong> {selectedProduct.fullDescription}</p>
                         <div>
                             <strong>Features:</strong>
                             <ul>
@@ -338,7 +327,6 @@ function Sunscreens() {
                                 ))}
                             </ul>
                         </div>
-
                         <div>
                             <strong>Main Ingredients:</strong>
                             <ul>
@@ -357,3 +345,8 @@ function Sunscreens() {
 }
 
 export default Sunscreens;
+
+
+
+
+
